@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        
+        <title>{{title}}</title>
+    </head>
+<body>
+
+
+<h1> Blog Posts</h1>
+<a href="/blog">List All Entries<br />(oldest-first)</a>
+
+<a href="/blog?sort=newest">List All Entries<br / >(newest-first)</a>
+
+<a href="/newentry">Create a New Entry<br /></a>
+
+
+
+
+<hr />
+
+{% if entry == 0 %}
+<p> No Entries Yet</p>
+{% else %}
+{% block content %}
+{% endblock %}
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "index.html"%}
+
+{% block content %}
+
+<h1> Today's New Post</h1>
+<form action="/newentry" method="post">
+    <div>
+        <lable for="title_field">Title of Entry:</lable>
+        <input id="title_field" name="title" type="text" value="{{ newtitle }}"/>
+        <span class="error" style="color:blue;">{{error}}</span>
+    </div>
+
+    <div>
+        <label for="body_field">Topic of Entry:</label>
+        <textarea rows="5" cols="50" id="body_field" name="body">{{ newbody }}</textarea>
+        <span class="error" style="color:blue;">{{error}}</span>
+    </div>
+    <input id="submit" type="submit" value="Save Entry" />
+</form>
+
+{% endblock %}

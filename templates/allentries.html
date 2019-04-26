@@ -1,0 +1,18 @@
+{% extends "index.html"%}
+
+{% block content %}
+
+    <h3>All Blog Entries</h3>
+    <ul>
+        {% for entry in all_entries %}
+        <li>
+            <h4>
+                <a href="/blog?id={{ entry.id }}">{{ entry.title }}</a>
+            </h4>
+            <p>{{ entry.body }}</p>
+            <p>{{ entry.created }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
