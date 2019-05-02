@@ -3,12 +3,11 @@
 
 <h1>All Users</h1>
 
-{% for user in users %}
+    {% for user in users %}
 
-    <ul>
-        <li><a href="/blog?user={{user.id}}">{{user.username}}</a></li>
-    </ul>
-
-{% endfor %}
+        <ul>
+            <li><a href="/blog?user={{user.id}}">{{user.username}}</a></li>
+        </ul>
+    {% endfor %}
 
 {% endblock %}

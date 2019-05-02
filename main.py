@@ -42,14 +42,14 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['index','blog','login','signup']
+    allowed_routes = ['index','blogentries','login','errors']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     users = User.query.all()
-    return redirect('index.html', users=users)
+    return render_template("index.html", users=users)
 
 @app.route('/blog', methods=['POST','GET'])
 def blogentries():
