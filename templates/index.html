@@ -1,29 +1,13 @@
-<!doctype html>
-<html>
-    <head>
-        
-        <title>{{title}}</title>
-    </head>
-<body>
-
-
-<h1> Blog Posts</h1>
-<a href="/blog">List All Entries<br />(oldest-first)</a>
-
-<a href="/blog?sort=newest">List All Entries<br / >(newest-first)</a>
-
-<a href="/newentry">Create a New Entry<br /></a>
-
-
-
-
-<hr />
-
-{% if entry == 0 %}
-<p> No Entries Yet</p>
-{% else %}
+{% extends 'base.html' %}
 {% block content %}
+
+<h1>All Users</h1>
+
+{% for user in users %}
+
+    <ul>
+        <li><a href="/blog?user={{user.id}}">{{user.username}}</a></li>
+    </ul>
+
+{% endfor %}
 {% endblock %}
-{% endif %}
-</body>
-</html>
