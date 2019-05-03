@@ -42,7 +42,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['index','blogentries','login','errors']
+    allowed_routes = ['index','blogentries','login','signup']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -53,6 +53,7 @@ def index():
 
 @app.route('/blog', methods=['POST','GET'])
 def blogentries():
+    print("you are in BLOG Entries")
     if "user" in request.args:
         user_id = request.args.get("user")
         user = User.query.get(user_id)
@@ -72,6 +73,7 @@ def blogentries():
 @app.route('/newblog', methods = ['GET', 'POST'])
 
 def newblog():
+    print("this is a newblog")
     if request.method == 'GET':
         return render_template('newblog.html')
 
@@ -96,9 +98,8 @@ def newblog():
     else:
         return render_template('newblog.html', title="Create New Blog Post")
 
-@ app.route ("/signup", methods= ['GET', 'POST'])
-
-def error():
+@app.route ("/signup", methods= ['GET', 'POST'])
+def signup():
     
     username_error = ""
     password_error = ""
@@ -157,6 +158,8 @@ def error():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print("login!!")
+    print(request.method)
     if request.method == 'GET':
         if 'username' not in session:
             return render_template("login.html", pagetitle='Login')
@@ -164,19 +167,23 @@ def login():
             return redirect('/newblog')
 
     if request.method == 'POST':
+        print("this is the log in post")
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
 
         if user and user.password == password:
+            print("there is a user and the password matches")
             session['username'] = username
             return redirect('/newblog')
 
         if user and user.password != password:
+            print("there is a user and the password no matches")
             password_error = "Incorrect Password"
             return render_template('login.html', password_error=password_error)
 
         if not user:
+            print("there is a no user")
             username_error = "The User Name is Incorrect"
             return render_template('login.html', username_error=username_error)
 
@@ -190,4 +197,5 @@ def logout():
     return redirect('/')
 
 if __name__ =='__main__':
+    app.secret_key="some secret key"
     app.run()

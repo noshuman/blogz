@@ -8,7 +8,7 @@
 
     {% else %}
 
-        {% for blog in user_blogs|sourt(attribute='id', reverse = True) %}
+        {% for blog in user_blogs|sort(attribute='id', reverse = True) %}
 
         <h2><a href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
         <p>{{blog.body}}</p>

@@ -3,7 +3,7 @@
 
 <h1>Log Into Blogz</h1>
 <p>If you do not have a Blogz account you may <a href="/signup">sign up</a> for one here.</p>
-<form method="post">
+<form action="/login" method="post">
         <br/>
         <label for="username">User Name</label>
         <input type="text" name="username" value='{{request.form['username']}}'/>
@@ -13,7 +13,7 @@
         <input type="password" name="password" id="password"/>
         <span class= "error" style="color: red;">{{password_error}}</span>
         <br/>
-        <input type="submit" value="Log In"
+        <input type="submit" value="Log In"/>
         <br/>
 
 </form>
