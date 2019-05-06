@@ -18,17 +18,12 @@ class Blog(db.Model):
     created = db.Column(db.DateTime)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, title, body):
+    def __init__(self, title, body, owner):
         self.title = title
         self.body = body
         self.created = datetime.utcnow()  
         self.owner = owner
-
-    def is_valid(self):
-        if self.title and self.body and self.created and self.owner:
-            return True
-        else:
-            return False   
+  
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -80,23 +75,25 @@ def newblog():
     if request.method == 'POST':
         newtitle = request.form['title']
         newbody = request.form['body']
-        newblog = Blog(newtitle, newbody)
+        titleerror = ''
+        bodyerror = ''
 
-        if newblog.is_valid():
-            owner = User.query.filter_by(username=session['username']).first()
-            newblog = Blog(newtitle, newbody, newblog, owner)
-            db.session.add(newblog)
-            db.session.commit()
-            url = "/blog?id=" + str(newblog.id)
-            return redirect(url)
+        if len(newtitle) == 0:
+            titleerror = "Your title is empty, please provide a title for your post."
+
+        if len(newbody) == 0:
+            bodyerror = "The body of your blog post is empty, please provide a blog post"
+
+        if titleerror or bodyerror:
+            return render_template('newblog.html', title_error=title_error, bodyerror=bodyerror, title="Create New Blog Post ", newtitle=newtitle, newbody=newbody)
 
         else:
-            error = "Please check your blog post for errors. Please make sure that both a valid title and body have been included with your blog."
-            return render_template('newblog.html', error=error, title="Create New Blog Post ", newtitle=newtitle, newbody=newbody)
-        
+            owner = User.query.filter_by(username=session['username']).first()
+            newblog = Blog(newtitle, newbody, owner)
+            db.session.add(newblog)
+            db.session.commit()
+            return redirect("/blog?id=" + str(newblog.id))
 
-    else:
-        return render_template('newblog.html', title="Create New Blog Post")
 
 @app.route ("/signup", methods= ['GET', 'POST'])
 def signup():
@@ -114,7 +111,6 @@ def signup():
         password = request.form['password']
         verifypassword = request.form['verifypassword']
 
-    
         if len(username) == 0:
             username_error = "Please enter a username."
 
@@ -140,7 +136,7 @@ def signup():
             password_error ="Your entry does not match your password entry, please re-enter your password." 
 
         if len(username_error) != 0 or len(password_error) !=0  or len(verifypassword_error) != 0:
-            return render_template("index.html", username_error=username_error, password_error=password_error, verifypassword_error=verifypassword_error)
+            return render_template("index.html", username_error=username_error,username=username, password_error=password_error, verifypassword_error=verifypassword_error)
 
         existinguser = User.query.filter_by(username=username).first()
         if existinguser:
@@ -154,12 +150,11 @@ def signup():
             session['username'] = username
             return redirect('/newblog')     
     else: 
-        return render_template("signup.html", username=username)    
+        return render_template("signup.html")    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print("login!!")
-    print(request.method)
+    
     if request.method == 'GET':
         if 'username' not in session:
             return render_template("login.html", pagetitle='Login')

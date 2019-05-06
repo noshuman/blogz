@@ -1,4 +1,4 @@
-{% extend "base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
@@ -8,6 +8,6 @@
     {{blog.body}}
 </p>
 
-<p>Blog Post by: <a href="/blog?user={{blog.owner_id}}">{{}blog.owner.username}</a>/p>
+<p>Blog Post by: <a href="/blog?user={{blog.owner_id}}">{{blog.owner.username}}</a></p>
 
 {% endblock %}
