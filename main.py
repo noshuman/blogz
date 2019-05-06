@@ -48,7 +48,7 @@ def index():
 
 @app.route('/blog', methods=['POST','GET'])
 def blogentries():
-    print("you are in BLOG Entries")
+
     if "user" in request.args:
         user_id = request.args.get("user")
         user = User.query.get(user_id)
@@ -62,13 +62,13 @@ def blogentries():
 
     else:
         blogs = Blog.query.all()
-        return render_template('index.html', page_title="All Blog Posts", blogs=blogs)
+        return render_template('singleuser.html', page_title="All Blog Posts", blogs=blogs)
         
 
 @app.route('/newblog', methods = ['GET', 'POST'])
 
 def newblog():
-    print("this is a newblog")
+
     if request.method == 'GET':
         return render_template('newblog.html')
 
@@ -168,17 +168,14 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if user and user.password == password:
-            print("there is a user and the password matches")
             session['username'] = username
             return redirect('/newblog')
 
         if user and user.password != password:
-            print("there is a user and the password no matches")
             password_error = "Incorrect Password"
             return render_template('login.html', password_error=password_error)
 
         if not user:
-            print("there is a no user")
             username_error = "The User Name is Incorrect"
             return render_template('login.html', username_error=username_error)
 
@@ -186,7 +183,7 @@ def login():
         return render_template('login.html')
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET'])
 def logout():
     del session['username']
     return redirect('/')
