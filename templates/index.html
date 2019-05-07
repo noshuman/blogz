@@ -4,10 +4,26 @@
 <h1>All Users</h1>
 
     {% for user in users %}
+        {% for blog in blogs%} 
+            {% if user.id == blog.owner_id %}
 
-        <ul>
-            <li><a href="/blog?user={{user.id}}">{{user.username}}</a></li>
-        </ul>
+                <ul>
+                    <li><a href="/blog?id={{blog.id}}">{{blog.title}}</a>
+                        <p>{{blog.body}}</p></li>
+
+                    <li><a href="/blog?user={{user.id}}">{{user.username}}</a></li>
+                    
+                   
+                </ul>
+
+
+            {% endif %}
+    
+
+           
+        {% endfor %}
+
     {% endfor %}
 
 {% endblock %}
+

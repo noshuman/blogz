@@ -43,8 +43,9 @@ def require_login():
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    users = User.query.all()
-    return render_template("index.html", users=users)
+    users = User.query.all() 
+    blogs = Blog.query.all()
+    return render_template("index.html", users=users, blogs=blogs)
 
 @app.route('/blog', methods=['POST','GET'])
 def blogentries():
@@ -61,8 +62,9 @@ def blogentries():
         return render_template("viewpost.html", blog=blog)
 
     else:
+        users = User.query.all() 
         blogs = Blog.query.all()
-        return render_template('singleuser.html', page_title="All Blog Posts", blogs=blogs)
+        return render_template("index.html", users=users, blogs=blogs)
         
 
 @app.route('/newblog', methods = ['GET', 'POST'])
